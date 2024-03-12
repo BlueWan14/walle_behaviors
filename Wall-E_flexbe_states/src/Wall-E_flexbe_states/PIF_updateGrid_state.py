@@ -2,7 +2,7 @@
 from flexbe_core import EventState
 
 
-class PIFUpdateGridState(EventState):
+class PIF_UpdateGridState(EventState):
 	'''
 	State to change value in grid for PIF.
 
@@ -19,7 +19,7 @@ class PIFUpdateGridState(EventState):
 	'''
 
 	def __init__(self, value):
-		super(PIFUpdateGridState, self).__init__(outcomes = ['done'],
+		super(PIF_UpdateGridState, self).__init__(outcomes = ['done'],
 												input_keys=['grid', 'area'],
 												output_keys=['new_grid']
 												)
