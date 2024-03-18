@@ -2,7 +2,7 @@
 
 <behavior name="essai_flexbe">
 
-	<executable package_path="Wall-E_flexbe_behaviors.essai_flexbe_sm" class="essai_flexbeSM" />
+	<executable package_path="walle_flexbe_behaviors.essai_flexbe_sm" class="essai_flexbeSM" />
 	<tagstring></tagstring>
 	<author>Erwan MAWART</author>
 	<date>Mon Mar 04 2024</date>

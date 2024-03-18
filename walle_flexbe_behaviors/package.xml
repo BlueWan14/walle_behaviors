@@ -1,8 +1,8 @@
 <package>
-  <name>Wall-E_flexbe_behaviors</name>
+  <name>walle_flexbe_behaviors</name>
   <version>1.0.0</version>
   <description>
-     Wall-E_flexbe_behaviors references all implemented behaviors.
+     walle_flexbe_behaviors references all implemented behaviors.
   </description>
   <maintainer email="todo@todo.com">TODO</maintainer>
   <license>BSD</license>

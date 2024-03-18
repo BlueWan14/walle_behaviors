@@ -1,8 +1,8 @@
 <package>
-  <name>Wall-E_flexbe_states</name>
+  <name>walle_flexbe_states</name>
   <version>1.0.0</version>
   <description>
-     Wall-E_flexbe_states provides a collection of custom states.
+     wallE_flexbe_states provides a collection of custom states.
      Feel free to add new states.
   </description>
   <maintainer email="todo@todo.com">TODO</maintainer>

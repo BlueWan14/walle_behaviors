@@ -2,7 +2,7 @@
 
 <behavior name="PIF_Spin">
 
-	<executable package_path="Wall-E_flexbe_behaviors.pif_spin_sm" class="PIF_SpinSM" />
+	<executable package_path="walle_flexbe_behaviors.pif_spin_sm" class="PIF_SpinSM" />
 	<tagstring>PIF</tagstring>
 	<author>Erwan MAWART</author>
 	<date>Thu Mar 07 2024</date>

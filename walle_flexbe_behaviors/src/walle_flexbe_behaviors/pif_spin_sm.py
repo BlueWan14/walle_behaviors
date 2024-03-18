@@ -8,7 +8,6 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from Wall-E_flexbe_states.PIF_move_state import PIFMoveState
 from Wall-E_flexbe_states.PIF_subscribeROS_state import PIF_SubscriberROSState
 from flexbe_states.calculation_state import CalculationState
 from flexbe_states.check_condition_state import CheckConditionState
@@ -67,16 +66,9 @@ class PIF_SpinSM(Behavior):
 			# x:50 y:52
 			OperatableStateMachine.add('End loop',
 										CheckConditionState(predicate=lambda x: x > complete_spin),
-										transitions={'true': 'clear', 'false': 'Rotate'},
+										transitions={'true': 'clear', 'false': 'Check for trash'},
 										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
 										remapping={'input_value': 'i'})
-
-			# x:226 y:156
-			OperatableStateMachine.add('Rotate',
-										PIFMoveState(topic=self.cmd_vel),
-										transitions={'done': 'Check for trash'},
-										autonomy={'done': Autonomy.Off},
-										remapping={'linear': 'zero', 'angular': 'angular'})
 
 			# x:281 y:25
 			OperatableStateMachine.add('i + 1',

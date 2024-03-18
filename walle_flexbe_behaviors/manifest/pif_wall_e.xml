@@ -2,7 +2,7 @@
 
 <behavior name="PIF_Wall-E">
 
-	<executable package_path="Wall-E_flexbe_behaviors.pif_wall_e_sm" class="PIF_WallESM" />
+	<executable package_path="walle_flexbe_behaviors.pif_wall_e_sm" class="PIF_WallESM" />
 	<tagstring>PIF</tagstring>
 	<author>Erwan MAWART</author>
 	<date>Wed Mar 06 2024</date>

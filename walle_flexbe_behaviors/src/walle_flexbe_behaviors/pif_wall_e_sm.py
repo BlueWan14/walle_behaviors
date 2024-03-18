@@ -10,7 +10,6 @@
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from Wall-E_flexbe_behaviors.pif_spin_sm import PIF_SpinSM
 from Wall-E_flexbe_states.PIF_CheckArray_state import PIF_CheckArrayState
-from Wall-E_flexbe_states.PIF_move_state import PIFMoveState
 from Wall-E_flexbe_states.PIF_updateGrid_state import PIFUpdateGridState
 from flexbe_states.wait_state import WaitState
 # Additional imports can be added inside the following tags
@@ -117,16 +116,9 @@ class PIF_WallESM(Behavior):
 			# x:359 y:147
 			OperatableStateMachine.add('Choose next tile',
 										_sm_choose_next_tile_3,
-										transitions={'finished': 'Go to middle', 'failed': 'failed'},
+										transitions={'finished': 'PIF_Spin', 'failed': 'failed'},
 										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit},
 										remapping={'area': 'area'})
-
-			# x:541 y:198
-			OperatableStateMachine.add('Go to middle',
-										PIFMoveState(topic=topic_cmd_vel),
-										transitions={'done': 'PIF_Spin'},
-										autonomy={'done': Autonomy.Off},
-										remapping={'linear': 'linear', 'angular': 'angular'})
 
 			# x:632 y:288
 			OperatableStateMachine.add('PIF_Spin',
@@ -145,7 +137,7 @@ class PIF_WallESM(Behavior):
 			# x:885 y:234
 			OperatableStateMachine.add('get trash',
 										_sm_get_trash_0,
-										transitions={'failed': 'failed', 'finished': 'Go to middle'},
+										transitions={'failed': 'failed', 'finished': 'Choose next tile'},
 										autonomy={'failed': Autonomy.Inherit, 'finished': Autonomy.Inherit},
 										remapping={'direction': 'direction'})
 
