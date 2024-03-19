@@ -8,10 +8,10 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from Wall-E_flexbe_behaviors.pif_spin_sm import PIF_SpinSM
-from Wall-E_flexbe_states.PIF_CheckArray_state import PIF_CheckArrayState
-from Wall-E_flexbe_states.PIF_updateGrid_state import PIFUpdateGridState
 from flexbe_states.wait_state import WaitState
+from walle_flexbe_behaviors.pif_spin_sm import PIF_SpinSM
+from walle_flexbe_states.PIF_CheckArray_state import PIF_CheckArrayState
+from walle_flexbe_states.PIF_updateGrid_state import PIF_UpdateGridState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -35,7 +35,7 @@ class PIF_WallESM(Behavior):
 		# parameters of this behavior
 
 		# references to used behaviors
-		self.add_behavior(PIF_SpinSM, 'PIF_Spin')
+		self.add_behavior(PIF_SpinSM, 'spin')
 
 		# Additional initialization code can be added inside the following tags
 		# [MANUAL_INIT]
@@ -50,7 +50,7 @@ class PIF_WallESM(Behavior):
 		topic_cmd_vel = "/cmd_vel_repeat"
 		setTile = "done"
 		topic_detectTrash = "/vision/detectTrash"
-		# x:150 y:277, x:968 y:38
+		# x:283 y:367, x:930 y:42
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 		_state_machine.userdata.linear = 1.0
 		_state_machine.userdata.angular = 25.0
@@ -62,9 +62,9 @@ class PIF_WallESM(Behavior):
 		# [/MANUAL_CREATE]
 
 		# x:30 y:453, x:130 y:453
-		_sm_get_trash_0 = OperatableStateMachine(outcomes=['failed', 'finished'], input_keys=['direction'])
+		_sm_set_origin_0 = OperatableStateMachine(outcomes=['finished', 'failed'])
 
-		with _sm_get_trash_0:
+		with _sm_set_origin_0:
 			# x:30 y:40
 			OperatableStateMachine.add('wait',
 										WaitState(wait_time=0.1),
@@ -73,9 +73,9 @@ class PIF_WallESM(Behavior):
 
 
 		# x:30 y:453, x:130 y:453
-		_sm_set_origin_1 = OperatableStateMachine(outcomes=['finished', 'failed'])
+		_sm_get_trash_1 = OperatableStateMachine(outcomes=['finished', 'failed'], input_keys=['direction'])
 
-		with _sm_set_origin_1:
+		with _sm_get_trash_1:
 			# x:30 y:40
 			OperatableStateMachine.add('wait',
 										WaitState(wait_time=0.1),
@@ -98,7 +98,7 @@ class PIF_WallESM(Behavior):
 		_sm_choose_next_tile_3 = OperatableStateMachine(outcomes=['finished', 'failed'], output_keys=['area'])
 
 		with _sm_choose_next_tile_3:
-			# x:118 y:62
+			# x:30 y:40
 			OperatableStateMachine.add('wait',
 										WaitState(wait_time=0.1),
 										transitions={'done': 'failed'},
@@ -107,52 +107,52 @@ class PIF_WallESM(Behavior):
 
 
 		with _state_machine:
-			# x:30 y:40
-			OperatableStateMachine.add('Create grid',
+			# x:42 y:42
+			OperatableStateMachine.add('create grid',
 										_sm_create_grid_2,
-										transitions={'finished': 'Set origin', 'failed': 'failed'},
+										transitions={'finished': 'set origin', 'failed': 'failed'},
 										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit},
 										remapping={'grid': 'grid'})
 
-			# x:359 y:147
-			OperatableStateMachine.add('Choose next tile',
+			# x:365 y:145
+			OperatableStateMachine.add('choose next tile',
 										_sm_choose_next_tile_3,
-										transitions={'finished': 'PIF_Spin', 'failed': 'failed'},
+										transitions={'finished': 'spin', 'failed': 'failed'},
 										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit},
 										remapping={'area': 'area'})
 
-			# x:632 y:288
-			OperatableStateMachine.add('PIF_Spin',
-										self.use_behavior(PIF_SpinSM, 'PIF_Spin',
-											parameters={'topic_detectTrash': topic_detectTrash, 'topic_cmd_vel': topic_cmd_vel}),
+			# x:654 y:223
+			OperatableStateMachine.add('get trash',
+										_sm_get_trash_1,
+										transitions={'finished': 'choose next tile', 'failed': 'failed'},
+										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit},
+										remapping={'direction': 'direction'})
+
+			# x:200 y:94
+			OperatableStateMachine.add('set origin',
+										_sm_set_origin_0,
+										transitions={'finished': 'choose next tile', 'failed': 'failed'},
+										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
+
+			# x:634 y:332
+			OperatableStateMachine.add('spin',
+										self.use_behavior(PIF_SpinSM, 'spin',
+											parameters={'topic_detectTrash': topi, 'topic_cmd_vel': topic}),
 										transitions={'clear': 'upgrade tile', 'detected': 'get trash', 'failed': 'failed'},
 										autonomy={'clear': Autonomy.Inherit, 'detected': Autonomy.Inherit, 'failed': Autonomy.Inherit},
 										remapping={'direction': 'direction'})
 
-			# x:186 y:94
-			OperatableStateMachine.add('Set origin',
-										_sm_set_origin_1,
-										transitions={'finished': 'Choose next tile', 'failed': 'failed'},
-										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
-
-			# x:885 y:234
-			OperatableStateMachine.add('get trash',
-										_sm_get_trash_0,
-										transitions={'failed': 'failed', 'finished': 'Choose next tile'},
-										autonomy={'failed': Autonomy.Inherit, 'finished': Autonomy.Inherit},
-										remapping={'direction': 'direction'})
-
-			# x:451 y:344
+			# x:615 y:453
 			OperatableStateMachine.add('upgrade tile',
-										PIFUpdateGridState(value=setTile),
-										transitions={'done': 'Check unclean tiles left'},
+										PIF_UpdateGridState(value=setTile),
+										transitions={'done': 'check unclean tiles left'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'grid': 'grid', 'area': 'area', 'new_grid': 'new_grid'})
 
-			# x:261 y:252
-			OperatableStateMachine.add('Check unclean tiles left',
+			# x:388 y:346
+			OperatableStateMachine.add('check unclean tiles left',
 										PIF_CheckArrayState(predicate=setTile),
-										transitions={'true': 'Choose next tile', 'false': 'finished'},
+										transitions={'true': 'choose next tile', 'false': 'finished'},
 										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
 										remapping={'input_value': 'grid'})
 

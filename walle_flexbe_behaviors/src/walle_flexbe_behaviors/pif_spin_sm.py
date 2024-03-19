@@ -8,7 +8,7 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from Wall-E_flexbe_states.PIF_subscribeROS_state import PIF_SubscriberROSState
+from walle_flexbe_states.PIF_subscribeROS_state import PIF_SubscriberROSState
 from flexbe_states.calculation_state import CalculationState
 from flexbe_states.check_condition_state import CheckConditionState
 # Additional imports can be added inside the following tags

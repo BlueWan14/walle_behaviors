@@ -19,7 +19,7 @@ class PIF_MoveState(EventState):
 		super(PIF_MoveState, self).__init__(outcomes = ['done'],
 									 	   input_keys=['linear', 'angular']
 										   )
-		self._pub = ProxyPublisher({self._topic: Twist})
+		self._pub = ProxyPublisher({"/cmd_vel_repeat": Twist})
 
 	def execute(self, userdata):
 		return 'done'
