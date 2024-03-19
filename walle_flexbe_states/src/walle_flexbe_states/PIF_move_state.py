@@ -4,11 +4,9 @@ from flexbe_core.proxy import ProxyPublisher
 from geometry_msgs.msg import Twist
 
 
-class PIFMoveState(EventState):
+class PIF_MoveState(EventState):
 	'''
 	State to send move commands to jackal for PIF.
-
-	-- topic	string	The topic on which should be published.
 
 	>= linear 	float 	Linear value to move.
 	>= angular	float	Angular value to move.
@@ -17,11 +15,10 @@ class PIFMoveState(EventState):
 
 	'''
 
-	def __init__(self, topic):
-		super(PIFMoveState, self).__init__(outcomes = ['done'],
+	def __init__(self):
+		super(PIF_MoveState, self).__init__(outcomes = ['done'],
 									 	   input_keys=['linear', 'angular']
 										   )
-		self._topic = topic
 		self._pub = ProxyPublisher({self._topic: Twist})
 
 	def execute(self, userdata):
@@ -31,4 +28,5 @@ class PIFMoveState(EventState):
 		val = Twist()
 		val.linear.x = userdata.linear
 		val.angular.z = userdata.angular
-		self._pub.publish(self._topic, val)
+		self._pub.publish("/cmd_vel_repeat", val)
+		

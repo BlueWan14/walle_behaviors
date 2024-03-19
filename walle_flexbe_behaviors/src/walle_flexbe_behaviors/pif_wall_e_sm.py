@@ -47,13 +47,14 @@ class PIF_WallESM(Behavior):
 
 
 	def create(self):
-		topic_cmd_vel = "/cmd_vel"
+		topic_cmd_vel = "/cmd_vel_repeat"
 		setTile = "done"
 		topic_detectTrash = "/vision/detectTrash"
 		# x:150 y:277, x:968 y:38
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 		_state_machine.userdata.linear = 1.0
 		_state_machine.userdata.angular = 25.0
+		_state_machine.userdata.zero = 0.0
 
 		# Additional creation code can be added inside the following tags
 		# [MANUAL_CREATE]
